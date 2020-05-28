@@ -1,16 +1,17 @@
 Single Neuron
 =============
 
-        ________
-    ____|       |
-        |       |___ Output
-    ____|       |
+         _______
+        |       |
+  x₁ ---|w₁     |
+        |       |---Output ŷ = σ((x₁⋅w₁ + x₂⋅w₂) + b)
+  x₂ ---|w₂     |
         |_______|
             |
           bias
 
 Output = (input 1 x weight 1) + (input 2 x weight 2) + ...  ... + bias
-        followed by an activation function.
+          put through some activation function.
 
 Concepts to implement
 ---------------------
@@ -29,8 +30,9 @@ Concepts to implement
     This is the *feedforward* part of the process.
 
 ### Activation
-    Given the simplicity of the task, rather than using a sigmoid,
-    a simple binary step function seems best.
+    For simplicity a sigmoid function will be used, as it seems to
+    the most well documented.
+            σ(x) = 1 / (1 + exp(-x))
 
 ### Loss function
     Typically, this is a sum-of-squares function: Σ(y - ŷ)²
