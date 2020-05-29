@@ -34,8 +34,8 @@ class TestNeuron(TestCase):
         self.assertEqual(result, answer)
 
     def test_train(self):
-        X = np.array([1, 0])
-        y = np.array([0, 0])
+        X = np.random.rand(1000, 1)
+        y = 2 * X
         n = Neuron(X, y)
         n.train()
         self.assertEqual(1, 1)

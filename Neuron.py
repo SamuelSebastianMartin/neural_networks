@@ -28,6 +28,7 @@ class Neuron:
         self.y_pred = np.zeros(self.input.size)  # Predicted values vector
         self.wts = np.random.rand(self.input.size, 1)
         self.bias = np.random.rand()
+        self.learnrate = 0.001
 
     def normalise(self, data):
         data = (data - data.mean()) / data.std()
@@ -38,6 +39,12 @@ class Neuron:
 
     def train(self):
         for i in range(self.input.size):
-            guess = np.dot(self.input[i], self.wts[i]) + self.bias
-            y_hat = self.sigmoid(guess)  # ŷ = σ(X·w + b)
+            print(self.wts[i])
+
+#            guess = np.dot(self.input[i], self.wts[i]) + self.bias
+#            y_hat = self.sigmoid(guess)  # ŷ = σ(X·w + b)
+#            error = self.y_true - y_hat
+#            # Update weights
+#            update_value = error * self.learnrate
+#            self.wts[i] = self.wts[i] + (update_value * error)
 
