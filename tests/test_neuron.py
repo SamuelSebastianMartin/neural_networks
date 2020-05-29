@@ -11,10 +11,10 @@ class TestNeuron(TestCase):
         y = np.array([0, 0, 1])
         n = Neuron(X, y)
         self.assertEqual(n.input.size, 3)
-        self.assertEqual(n.output.size, 3)
-        self.assertEqual(n.y_pred, 0)
+        self.assertEqual(n.y_pred.size, 3)
+        self.assertEqual(n.y_pred[0], 0)
         self.assertEqual(n.wts.size, 3)
-        self.assertEqual(n.y.size, 3)
+        self.assertEqual(n.y_true.size, 3)
 
     def test_normalise(self):
         """ Note: normalised [1, 0] = [1, -1] """

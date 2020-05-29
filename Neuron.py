@@ -28,7 +28,6 @@ class Neuron:
         self.y_pred = np.zeros(self.input.size)  # Predicted values vector
         self.wts = np.random.rand(self.input.size, 1)
         self.bias = np.random.rand()
-        self.output = np.zeros(self.y.size)  # Predicted values: ŷ.
 
     def normalise(self, data):
         data = (data - data.mean()) / data.std()
