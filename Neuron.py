@@ -31,14 +31,22 @@ class Neuron:
 
         self.y_true = y_scalar  # The actual value: y.
         self.learnrate = 0.001
+        self.y_pred = self.predict()
+        self.error = self.find_error()
 
     def normalise(self, data):
+        """An optional method giving the z-score"""
         data = (data - data.mean()) / data.std()
         return data
 
-    def guess(self):
-        return np.dot(self.input, self.wts)
+    def predict(self):
+        guess = np.dot(self.input, self.wts)
+        y_predicted = self.sigmoid(guess)
+        return y_predicted
 
     def sigmoid(self, value):
         return 1 / (1 + np.exp(-value))
 
+    def find_error(self):
+        error = ((self.y_true - self.y_pred) **2) / 2
+        return error
