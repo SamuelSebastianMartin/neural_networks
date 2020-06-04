@@ -10,25 +10,26 @@ class TestNeuron(TestCase):
         X = np.array([1, 2, 3])
         y = np.array([0, 0, 1])
         n = Neuron(X, y)
-        self.assertEqual(n.input.size, 3)
-        self.assertEqual(n.y_pred.size, 3)
-        self.assertEqual(n.y_pred[0], 0)
-        self.assertEqual(n.wts.size, 3)
-        self.assertEqual(n.y_true.size, 3)
+        self.assertEqual(n.wts.size, 4)
+        self.assertEqual(n.input.size, 4)
+        self.assertEqual(n.input[0], 1)
+        self.assertLess(n.learnrate, 1)
 
     def test_normalise(self):
         """ Note: normalised [1, 0] = [1, -1] """
         X = np.array([1, 0])
         y = np.array([0, 0])
         n = Neuron(X, y)
-        self.assertEqual(n.input[0], 1)
-        self.assertEqual(n.input[1], -1)
+        norm = n.normalise(X)
+        self.assertEqual(norm[0], 1)
+        self.assertEqual(norm[1], -1)
 
     def test_guess(self):
         X = np.array([0, 0])
         y = np.array([0, 0])
         n = Neuron(X, y)
-        self.assertEqual(n.guess(), 0)
+        bias = n.wts[0]
+        self.assertEqual(n.guess(), bias)
 
     def test_sigmoid(self):
         """Note: exp(0) = 1"""

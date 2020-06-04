@@ -22,12 +22,14 @@ import numpy as np
 
 
 class Neuron:
-    def __init__(self, x_vector, y_vector):
-        self.input = x_vector
-        self.y_true = y_vector  # The actual values: y.
-        self.y_pred = np.zeros(self.input.size)  # Predicted values vector
+    def __init__(self, x_vector, y_scalar):
+        # Import x adding x[0] = 1, as coefficient of bias term
+        self.input = np.insert(x_vector, 0, 1)  # (object, position, value)
+
+        # create weight vector with wts[0] = bias
         self.wts = np.random.rand(self.input.size, 1)
-        self.bias = np.random.rand()
+
+        self.y_true = y_scalar  # The actual value: y.
         self.learnrate = 0.001
 
     def normalise(self, data):
