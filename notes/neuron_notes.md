@@ -17,11 +17,12 @@ Concepts to implement
 ---------------------
 
 ### Input
-    It should take a vector, X, of x-values
+    It should take a vector, X, of x-values, each value
+    corresponding to one feature.
+    The Neuron will process one datum at a time.
 
 ### Output
-    This will be a scalar (as it is a single neuron, not a network
-    it will not output a vector.
+    This will be a scalar, y, as it is a single neuron, not a network.
 
 ### Formula
     ŷ = σ(X·w + b),
@@ -34,16 +35,35 @@ Concepts to implement
     the most well documented.
             σ(x) = 1 / (1 + exp(-x))
 
-### Loss function
+### Cost function
     Typically, this is a sum-of-squares function: Σ(y - ŷ)²
     where y is the actual value, and ŷ is predicted by the algorithm.
-    Here, however, as there is only a single binary output, loss will
-    be calculated using α(y - ŷ), where α is the learning rate. Thus
 
-    * correct values (where ŷ = y) will lead to no change
-        α(0 - 0) = α(1 - 1) = 0
+    Here we will define cost *J* as J(W) = 1/2 (y - ŷ)²
+    The '1/2' is arbitrary, but simplifies the differentiation, later.
+    Note that *J* is a funtion of the weights, as they are the variable
+    that we will be updating.
 
-    * incorrect values(where ŷ ≠ y) will lead to a change of ± α
-        α(1 - 0) = α    -> positive change in w
-        α(0 - 1) = -α   -> negative change in w
+### Update Weights
+    Weights will be updated in order to minimise the cost function
+    using gradient descent.
+    New weight = weight + derivative of cost * learning rate
+    W := W + ∂J/∂W * α
 
+    The learning rate, α, is some small value to dampen the effect
+    of updates. A typical value woud be 0.1
+
+    To find the derivative of the cost ∂J/∂W is complex:
+        firstly, it will involve the chain rule, as J is not
+        a function of W, directly.
+        Cost = J(ŷ) =  1/2 Σ(y - ŷ)     y is a constant
+        ŷ = σ(h) = 1 / (1 + exp(-h))
+        h = f(w) = w₁ * x₁ + w₂ * x₂ + b
+
+    By the chain rule:  ∂J/∂w₁ = ∂J/∂σ ・ ∂σ/∂h ・∂h/∂W
+        ∂J/∂ŷ = 1/2(2)(y - ŷ) = (y - ŷ)・ŷ
+        ∂ŷ/∂h = σ(h)・(1 - σ(h))
+        ∂h/∂w₁ = x₁
+
+    Therefore, in terms of variables that are readily available,
+    ∂J/∂w₁ = -(y - ŷ)・ŷ(1 - ŷ)・x₁
