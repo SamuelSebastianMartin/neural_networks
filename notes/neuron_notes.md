@@ -31,7 +31,7 @@ Concepts to implement
     This is the *feedforward* part of the process.
 
 ### Activation
-    For simplicity a sigmoid function will be used, as it seems to
+    For simplicity a sigmoid function will be used, as it seems to be
     the most well documented.
             σ(x) = 1 / (1 + exp(-x))
 
