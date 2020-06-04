@@ -17,16 +17,17 @@ Concepts to implement
 ---------------------
 
 ### Input
-    It should take a vector, X, of x-values
+    It should take a vector, X, of 2 x-values
+    These can be supplied serially by the calling program.
 
 ### Output
     This will be a scalar (as it is a single neuron, not a network
-    it will not output a vector.
+    The output will represent a categorical decision, 0 or 1
 
 ### Formula
     ŷ = σ(X·w + b),
-      where σ is the activation function.
-      and ŷ is the predicted value of y
+        where σ is the activation function.
+        and ŷ is the predicted value of y
     This is the *feedforward* part of the process.
 
 ### Activation
@@ -35,15 +36,15 @@ Concepts to implement
             σ(x) = 1 / (1 + exp(-x))
 
 ### Loss function
-    Typically, this is a sum-of-squares function: Σ(y - ŷ)²
+    Typically, this is a sum-of-squares function: J = Σ(y - ŷ)²
     where y is the actual value, and ŷ is predicted by the algorithm.
-    Here, however, as there is only a single binary output, loss will
-    be calculated using α(y - ŷ), where α is the learning rate. Thus
 
-    * correct values (where ŷ = y) will lead to no change
-        α(0 - 0) = α(1 - 1) = 0
+### Weight updates
+    Weights are updated to minimise the loss function J.
+    Using gradient descent, the updates will be zero at the minimum.
+        J(w) = (y - ŷ)² = (y - (X·w + b)),
+        Gradient ∂J/∂w = (y - (X·w + b))*X,
+    Thus, each weight will be updated separately
 
-    * incorrect values(where ŷ ≠ y) will lead to a change of ± α
-        α(1 - 0) = α    -> positive change in w
-        α(0 - 1) = -α   -> negative change in w
+
 
