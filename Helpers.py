@@ -35,6 +35,5 @@ class Data:
         Returns 0 or 1, separated at y = m*x + c
         i.e. y - m*x > c
         """
-        y_temp = np.random.rand(self.size) * 10
-        discrim = y_temp - (self.gradient * self.x)  #  y - m*x
-        self.y = np.where(y_temp > self.intercept, 1, 0)
+        self.x2 = np.random.rand(self.size) * 10
+        self.y = np.where(self.x2 - (self.x * self.gradient) > self.intercept, 1, 0)
