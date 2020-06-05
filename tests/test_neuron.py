@@ -41,18 +41,18 @@ class TestNeuron(TestCase):
         answer = 0.5
         self.assertEqual(result, answer)
 
-    def test_error(self):
+    def test_cost(self):
         X = np.array([1, 0])
         y = 0
         n = Neuron(X, y)
-#        self.assertLessEqual(n.error.size, 1)
-        print(n.error)
+#        self.assertLessEqual(n.cost.size, 1)
+        print(n.cost)
         n.y_true = 1
         n.y_pred = 1
-        self.assertEqual(n.find_error(), 0)
+        self.assertEqual(n.find_cost(), 0)
         n.y_true = 0
         n.y_pred = 1
-        self.assertEqual(n.find_error(), 0.5)
+        self.assertEqual(n.find_cost(), 0.5)
 
 if __name__ == '__main__':
     unittest.main()

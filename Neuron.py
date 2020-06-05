@@ -32,7 +32,7 @@ class Neuron:
         self.y_true = y_scalar  # The actual value: y.
         self.learnrate = 0.001
         self.y_pred = self.predict()
-        self.error = self.find_error()
+        self.cost = self.find_cost()
 
     def normalise(self, data):
         """An optional method giving the z-score"""
@@ -47,6 +47,10 @@ class Neuron:
     def sigmoid(self, value):
         return 1 / (1 + np.exp(-value))
 
-    def find_error(self):
-        error = ((self.y_true - self.y_pred) **2) / 2
-        return error
+    def find_cost(self):
+        cost = ((self.y_true - self.y_pred) **2) / 2
+        return cost
+
+    def update_wts(self):
+        multiplier =  -(y_true - y_pred) * y_pred * (1 - y_pred)
+        self.wts = self.wts + self.learnrate * multiplier * self.input
