@@ -60,4 +60,4 @@ class Data:
         """
         self.x2 = np.random.rand(self.size) * 10
         self.y = np.where(self.x2 - (self.x * self.gradient) > self.intercept, 1, 0)
-        return self.input, self.x2, self.y
+        return self.x, self.x2, self.y
