@@ -10,19 +10,26 @@ Single Neuron
             |
           bias
 
-Output = (input 1 x weight 1) + (input 2 x weight 2) + ...  ... + bias
-          put through some activation function.
 
 Concepts to implement
 ---------------------
 
 ### Input
-    It should take a vector, x, of 2 x-values
-    These can be supplied serially by the calling program.
+    It should take
+    * Matrix, X, of features (independent variables)
+        The number of features (columns) = n
+        The number of data points (rows) = m
+                _                   _
+               | x₁⁽¹⁾, x₂⁽¹⁾, x₃⁽¹⁾ |
+               | x₁⁽²⁾, x₂⁽²⁾, x₃⁽²⁾ |
+               | x₁⁽³⁾, x₂⁽³⁾, x₃⁽³⁾ |
+               |_x₁⁽⁴⁾, x₂⁽⁴⁾, x₃⁽⁴⁾_|
+
+    * Vector, y, of labels, size m (for training and testing)
 
 ### Output
-    This will be a scalar (as it is a single neuron, not a network
-    The output will represent a categorical decision, 0 or 1
+    This will be a vector of y values
+    Plus some graphical representation of the decreasing error
 
 ### Formula
     ŷ = σ(X·w + b),
