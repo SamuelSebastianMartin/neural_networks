@@ -12,9 +12,16 @@ class Regression:
             ***
     """
     def __init__(self, X_features, y_true_values):
-        self.X = self.add_ones_column( X_features)
+        # Fixed Values:
+        self.X = self.add_ones_column( X_features)  # n x m matrix
+        self.m = self.X.shape[0]  # No. of data inputs (X:rows)
+        self.n = self.X.shape[1]  # No. of features + bias (X:columns)
         self.y = self.configure_y(y_true_values)
-        self.w = np.random.rand(1, self.X.shape[0] + 1)
+
+        # Changing values:
+        self.w = np.random.rand(1, self.n)
+        self.hypothesis = np.zeros((self.m, 1))  # h = b + w1X1 + w2X2.
+        self.cost_record = []  # For plotting cost for each epoch
 
     def add_ones_column(self, X_features):
         """
@@ -31,10 +38,10 @@ class Regression:
             Checks the number of rows is the same in X and y, and
             returns y as a column vector
         """
-        if labels_vector.size != self.X.shape[0]:
+        if labels_vector.size != self.m:
             raise Exception('X & y not conformable')
         else:
-            y = labels_vector.reshape((self.X.shape[0], 1))
+            y = labels_vector.reshape((self.m, 1))
             return y
 
     def generate_weight_vector():
@@ -43,23 +50,27 @@ class Regression:
             Note, the first weight is the bias and is always
             multiplied by the 1 in the first column of X.
         """
-        weight_vector = np.random.rand((1, self.X.shape[1]))
+        weight_vector = np.random.rand((1, self.n))
 
     def predict(self):
         """
             For each row, calulate the predicted value:
                 1*bias + x1*w1 + x2*w2 + ... + xn*wn
         """
-        hypothesis = np.dot(self.X, self.w)
-        return hypothesis
+        self.hypothesis = np.dot(self.X, self.w.transpose())
 
-    def find_cost(self):
-        cost = ((self.y_true - self.y_pred) **2) / 2
-        return cost
+    def caluculate_cost(self):
+        """
+            This is not necessary for funtioning, but gives
+            a way to check that there is some convergence.
+            Cost = J(w) = 1/2m (hypothesis - y)' (hypothesis - y)
+        """
+        cost = self.hypothesis - self.y
+        self.cost_record.append(cost)
+        print(cost)  # Soon to be replaced by graph of cost_record
 
     def update_wts(self):
-        multiplier =  -(y_true - y_pred) * y_pred * (1 - y_pred)
-        self.wts = self.wts + self.learnrate * multiplier * self.input
+        pass
 
 
 # class Neuron:

@@ -69,12 +69,17 @@ Concepts to implement
         where the sum is from i = 1 to m
         i.e. the sum of all the data items (rows) in X
         y is the actual value, and h is predicted: X * wts
-    we will use: Cost, J(wts) = 1/2m * Σ(h - y)²
+    we will use: Cost, J(w) = 1/2m * Σ(h - y)²
+    Note that J is a funtion of the weights, as they are the variable
+    that we will be updating.
+
+    In matrix implementation, the square can be achieved by multiplying
+    the matrix with its own transpose:
+        J(w) = 1/2m (X∙w - y)'(X∙w - y)
+             = 1/2m (h - y)'(h - y)
     The cost is halved to simplify differentiation. This will
     not affect the results, as we now minimise cost/2.
 
-    Note that *J* is a funtion of the weights, as they are the variable
-    that we will be updating.
 
 ### Update Weights
     Weights will be updated in order to minimise the cost function
@@ -90,7 +95,7 @@ Concepts to implement
             J(w) = 1/2m * Σ(h - y)²
                  = 1/2m * Σ(X*w - y)²
 
-        Note that the only multiplier of x is X, so
+        Note that the only multiplier of w is X, so
         We can write out the update rules for each element of w like this:
 
             w₀ = w₀ - α * 1/m * (h - y) * x₀  # x₀ = 1: bias term/consant
