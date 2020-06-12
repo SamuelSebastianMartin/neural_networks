@@ -4,6 +4,7 @@ from unittest import TestCase
 import numpy as np
 from Neuron import Regression
 
+
 class TestRegression(TestCase):
 
     def setUp(self):
@@ -45,63 +46,15 @@ class TestRegression(TestCase):
         self.assertEqual(self.r.hypothesis[1], 8)
 
     def test_cost(self):
-        self.r.predict()
-        j = self.r.caluculate_cost()
-        print('cost = ', j)
-        print(self.r.y)
-        print(self.r.hypothesis)
+        # Linear fn: y = x + 1
+        x_matrix = np.array([1])
+        y_matrix = np.array([2])
+        r_three = Regression(x_matrix, y_matrix)
+        r_three.w = np.array([[1, 1]])
+        r_three.predict()
+        r_three.caluculate_cost()
+        self.assertEqual(r_three.cost, 0)
 
-
-
-# class TestNeuron(TestCase):
-# 
-#     def test_init(self):
-#         X = np.array([1, 2, 3])
-#         y = 0
-#         n = Neuron(X, y)
-#         self.assertEqual(n.wts.size, 4)
-#         self.assertEqual(n.input.size, 4)
-#         self.assertEqual(n.input[0], 1)
-#         self.assertLess(n.learnrate, 1)
-# 
-#     def test_normalise(self):
-#         """ Note: normalised [1, 0] = [1, -1] """
-#         X = np.array([1, 0])
-#         y = 0
-#         n = Neuron(X, y)
-#         norm = n.normalise(X)
-#         self.assertEqual(norm[0], 1)
-#         self.assertEqual(norm[1], -1)
-# 
-#     def test_predict(self):
-#         X = np.array([0, 0])
-#         y = 0
-#         n = Neuron(X, y)
-#         bias = n.wts[0]
-#         self.assertLessEqual(n.predict(), 1)
-#         self.assertGreaterEqual(n.predict(), 0)
-# 
-#     def test_sigmoid(self):
-#         """Note: exp(0) = 1"""
-#         X = np.array([1, 0])
-#         y = 0
-#         n = Neuron(X, y)
-#         result = n.sigmoid(0)
-#         answer = 0.5
-#         self.assertEqual(result, answer)
-# 
-#     def test_cost(self):
-#         X = np.array([1, 0])
-#         y = 0
-#         n = Neuron(X, y)
-# #        self.assertLessEqual(n.cost.size, 1)
-#         print(n.cost)
-#         n.y_true = 1
-#         n.y_pred = 1
-#         self.assertEqual(n.find_cost(), 0)
-#         n.y_true = 0
-#         n.y_pred = 1
-#         self.assertEqual(n.find_cost(), 0.5)
 
 if __name__ == '__main__':
     unittest.main()
