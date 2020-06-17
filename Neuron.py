@@ -2,6 +2,7 @@
 
 
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 class Regression:
@@ -11,8 +12,8 @@ class Regression:
         Use:
             ***
     """
-    def __init__(self, X_features, y_true_values):
-        # Fixed Values:
+    def __init__(self, X_features, y_true_values, learning_rate=0.1, epochs=100):
+        # Constant Values:
         if len(X_features.shape) == 1:  # Catch one dimensional X matrix
             X_features = X_features.reshape((1, X_features.shape[0]))
             print('Warning: X matrix is assumed to be one row of features')
@@ -21,11 +22,17 @@ class Regression:
         self.m = self.X.shape[0]  # No. of data inputs (X:rows)
         self.n = self.X.shape[1]  # No. of features + bias (X:columns)
         self.y = self.configure_y(y_true_values)
+        self.learning_rate = learning_rate
+        self.epochs = epochs
 
-        # Changing values:
-        self.w = np.random.rand(1, self.n)
+        # Variable values:
+        self.w = np.random.rand(self.n, 1)
         self.hypothesis = np.zeros((self.m, 1))  # h = b + w1X1 + w2X2.
         self.cost_record = []  # For plotting cost for each epoch
+
+    ##################################
+    ##  Methods Needed by __init__  ##
+    ##################################
 
     def add_ones_column(self, X_features):
         """
@@ -54,14 +61,31 @@ class Regression:
             Note, the first weight is the bias and is always
             multiplied by the 1 in the first column of X.
         """
-        weight_vector = np.random.rand((1, self.n))
+        weight_vector = np.random.rand(self.n)
+
+    #############################
+    ##  Methods Used to Train  ##
+    #############################
+
+    def train(self):
+        for epoch in range(self.epochs):
+            self.predict()
+            self.caluculate_cost()
+            self.update_weights()
+        cost_record = np.array(self.cost_record)
+        plt.plot(cost_record)
+        plt.title('Total Error over Time.')
+        plt.xlabel('Epochs')
+        plt.ylabel('Total Error')
+        plt.show()
+        print(self.w)
 
     def predict(self):
         """
             For each row, calulate the predicted value:
                 1*bias + x1*w1 + x2*w2 + ... + xn*wn
         """
-        self.hypothesis = np.dot(self.X, self.w.transpose())
+        self.hypothesis = np.dot(self.X, self.w)
 
     def caluculate_cost(self):
         """
@@ -69,10 +93,15 @@ class Regression:
             a way to check that there is some convergence.
             Cost = J(w) = 1/2m (hypothesis - y)' (hypothesis - y)
         """
-        error = self.hypothesis - self.y
-        self.cost = np.dot(error.transpose(), error) / (2 * self.m)
-        self.cost_record.append(self.cost)
-        print(self.cost)  # Soon to be replaced by graph of cost_record
+        self.error = self.hypothesis - self.y
+        self.cost = np.dot(self.error.transpose(), self.error) / (2 * self.m)
+        self.cost_record.append(self.cost[0])  # add a number not a list
 
-    def update_wts(self):
-        pass
+    def update_weights(self):
+        """
+            Using the formula 
+            w := w - learning_rate/m * X'(X*w - y)
+            w := w - learning_rate/m * X'(error)
+        """
+        self.w = self.w - (self.learning_rate / self.m
+                           * self.X.transpose() @ self.error)

@@ -7,12 +7,10 @@ from Neuron import Regression
 
 class TestRegression(TestCase):
 
-    def setUp(self):
-        x_matrix = np.array([1,2,3,4]).reshape((2,2))
-        y_vector = np.array([2, 2])
-        self.r = Regression(x_matrix, y_vector)
-
     def test_init(self):
+        x_matrix = np.array([1,2,3,4]).reshape((2,2))
+        y_vector = np.array([2, 2]).reshape((2, 1))
+        self.r = Regression(x_matrix, y_vector)
         # Check that 1's column is added to left of X.
         self.assertEqual(self.r.X.size, 6)
         self.assertEqual(self.r.X[0,0], 1)
@@ -40,7 +38,10 @@ class TestRegression(TestCase):
         """
             Check that weights and features multiply correctly.
         """
-        self.r.w = np.array([1, 1, 1,])
+        x_matrix = np.array([1,2,3,4]).reshape((2,2))
+        y_vector = np.array([2, 2]).reshape((2, 1))
+        self.r = Regression(x_matrix, y_vector)
+        self.r.w = np.array([1, 1, 1]).reshape(3, 1)
         self.r.predict()
         self.assertEqual(self.r.hypothesis[0], 4)
         self.assertEqual(self.r.hypothesis[1], 8)
@@ -50,10 +51,35 @@ class TestRegression(TestCase):
         x_matrix = np.array([1])
         y_matrix = np.array([2])
         r_three = Regression(x_matrix, y_matrix)
-        r_three.w = np.array([[1, 1]])
+        r_three.w = np.array([1, 1]).reshape(2, 1)
         r_three.predict()
         r_three.caluculate_cost()
         self.assertEqual(r_three.cost, 0)
+        self.assertEqual(len(r_three.cost_record), 1)
+
+    def test_update_weights(self):
+        x_matrix = np.array([1,2,3,4]).reshape((2,2))
+        y_vector = np.array([2, 2]).reshape((2, 1))
+        self.r = Regression(x_matrix, y_vector)
+        self.r.w = np.array([1, 1, 1]).reshape(3, 1)
+        self.r.predict()
+        self.r.caluculate_cost()
+        old_w = self.r.w
+        self.r.update_weights()
+        new_w = self.r.w
+        self.assertEqual(old_w.shape, new_w.shape)
+        self.assertNotEqual(old_w[0], new_w[0])
+
+    def test_train(self):
+        # y = 1 + 2x
+        x_matrix = np.array([1,2,3,4]).reshape((4, 1))
+        y_vector = np.array([3,5,7,9]).reshape((4, 1))
+        self.r = Regression(x_matrix, y_vector)
+        self.r.train()
+        intercept_error = abs(self.r.w[0] - 1)
+        gradient_error = abs(self.r.w[1] - 2)
+        self.assertLess(gradient_error, 0.2)
+        self.assertLess(intercept_error, 0.2)
 
 
 if __name__ == '__main__':
